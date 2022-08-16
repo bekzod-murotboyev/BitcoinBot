@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>HOME</title>
+</head>
+<body>
+
+<div class="container-fluid bg-dark">
+    <div class="row p-5 h-100 ">
+        <div class="col-md-10">
+            <!--/*@thymesVar id="username" type="uz.pdp.bitcoin.entity.Owner"*/-->
+            <h1 th:text="${response.getObject().username}" class="text-success underlined border-bottom"></h1>
+        </div>
+        <div class="col-md-2 text-right">
+                <a id="users" href="/users" class="btn btn-success m-1 w-50 ">Users</a>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const token = [[${response.getToken()}]]
+    // const baseUrl="https://mybitcoinbot.herokuapp.com/";
+    const baseUrl = "http://localhost:8080/";
+
+    // function getUsers() {
+    //     // let xhr = new XMLHttpRequest();
+    //     // xhr.open('GET', url, true);
+    //     // if (token)
+    //     //     xhr.setRequestHeader("Authorization", "Bearer " + token)
+    //     // xhr.send()
+    //     const url = baseUrl + "users"
+    //     fetch(url, {
+    //         method: 'get',
+    //         headers: new Headers({"Authorization": "Bearer " + token})
+    //     }).then(response => console.log(response))
+    // }
+</script>
+</body>
+</html>

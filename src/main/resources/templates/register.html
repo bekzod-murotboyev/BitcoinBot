@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>REGISTRATION</title>
+</head>
+<body>
+<div class="container-fluid bg-dark p-5">
+    <div class="row m-5">
+        <div class="col-md-6 offset-3">
+            <div class="card">
+                <div class="card-header "><h2>Login</h2></div>
+                <div class="card-body">
+                    <form id="myLoginForm" action="/register" method="post">
+                        <input type="text" required class='my-3 p-4 form-control pt-3'
+                               name='username' placeholder='Username'/>
+                        <input type="text" required class='my-3 p-4 form-control pt-3'
+                               name='email' placeholder='Email'/>
+                        <input type="password" id="psw" minlength="6" onkeyup="checkPassword()"  required class='my-3 p-4 form-control pt-3'
+                               name='password' placeholder='Password'/>
+                        <input type="password" id="prePsw" onkeyup="checkPassword()"  required class='my-3 p-4 form-control pt-3'
+                               name='prePassword' placeholder='Enter password again'/>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <button id="register-btn" form='myLoginForm' class="my-2 btn form-control btn-lg btn-success">Sign up</button>
+                    <a href="/login" class='text-muted text-sm text-decoration-none'>Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="toast" class="toast m-5" th:classappend="${response!=null} ? show: hide" style="position: absolute; top: 0; right: 0;">
+        <div class="toast-header text-success">
+            <strong class="mr-2">Message</strong>
+            <h3 class="mr-auto">&#9842;</h3>
+            <button onclick="closeToast()" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body" th:text="${response!=null} ? ${response.getMessage()}:' '"  th:classappend="${response!=null && response.isSuccess()} ? 'text-success' : 'text-danger'" ></div>
+    </div>
+    <script>
+        function checkPassword() {
+            let psw = document.getElementById("psw")
+            let prePsw = document.getElementById("prePsw")
+            let btn = document.getElementById("register-btn")
+            let ok=psw.value !== prePsw.value
+            btn.disabled = ok;
+            btn.className="my-2 btn form-control btn-lg "+(ok?"btn-default":"btn-success");
+            prePsw.style.borderColor = ok ? "red" : "green"
+        }
+        function closeToast(){
+            document.getElementById("toast").className='toast m-5 hide'
+        }
+    </script>
+</div>
+</body>
+</html>

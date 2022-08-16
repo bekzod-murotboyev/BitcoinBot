@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>VERIFICATION</title>
+</head>
+<body>
+
+<div class="container-fluid bg-dark h-100 w-100 p-5">
+    <div class="row m-5">
+        <div class="col-md-4 offset-4">
+            <div class="card">
+                <div class="card-header "><h2>Verification</h2></div>
+                <div class="card-body">
+                    <form id="myLoginForm" action="/verify" method="post">
+                        <div class="input-group has-validation">
+                            <input id="input" name="code" type="text" class="form-control p-4"  required placeholder="Email code">
+                            <span id="demo" class="input-group-text text-success border-left-0">-</span>
+                        </div>
+                        <input type="number" name="id" class="form-control p-4 d-none" th:value="${response.getObject()}" >
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <button id="btn" form='myLoginForm' class="my-2 btn float-right btn-success">Send</button>
+                    <button  th:onclick="'resetMail(\'' + ${response.getObject()} + '\');'" id="reset" class="d-none my-2 btn float-right btn-secondary mx-1">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast m-5 show" style="position: absolute; top: 0; right: 0;">
+    <div class="toast-header text-success">
+        <strong class="mr-2">Message</strong>
+        <h3 class="mr-auto">&#9842;</h3>
+        <button onclick="closeToast()" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body" th:text="${response.getMessage()}"  th:classappend="${response.isSuccess()} ? 'text-success' : 'text-danger'" ></div>
+</div>
+<script th:inline="javascript">
+    var success=[[${response.isSuccess()}]];
+    var time=success?60:5;
+    document.getElementById("demo").innerHTML = success?"60":"5";
+    // const baseUrl="https://mybitcoinbot.herokuapp.com/";
+    const baseUrl="http://localhost:8080/";
+
+
+    var x = setInterval(closeAll, 1000);
+    function resetMail(id){
+        document.getElementById("demo").innerHTML = "60";
+        document.getElementById("input").disabled=false
+        document.getElementById("btn").disabled=false
+        document.getElementById("reset").className="d-none my-2 btn float-right btn-secondary mx-1"
+        time=60
+        x=setInterval(closeAll,1000)
+        let xhr = new XMLHttpRequest();
+
+        const url=baseUrl+"reset?id="+id
+        xhr.open('PUT', url, true);
+        xhr.send();
+    }
+    function closeAll () {
+        time--
+        if (time < 1) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "-";
+            document.getElementById("input").disabled=true
+            document.getElementById("btn").disabled=true
+            document.getElementById("reset").className="my-2 btn float-right btn-secondary mx-1"
+        }else
+            document.getElementById("demo").innerHTML =time
+    }
+    function closeToast(){
+        document.getElementById("toast").className='toast m-5 hide'
+    }
+</script>
+</body>
+</html>
